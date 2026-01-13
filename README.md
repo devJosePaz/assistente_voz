@@ -24,49 +24,97 @@ O foco do projeto é:
 
 ---
 
-## Estrutura do projeto
-
-.
-├── main.py # Orquestrador
-├── stt.py # Gravação de áudio (sounddevice)
-├── transcription.py # Whisper (STT)
-├── llm.py # LLM remoto
-├── tts.py # Text-to-Speech
-├── audio_player.py # Reprodução do áudio
-├── client.py # Tokens (.env)
-├── audio.wav
-├── tts.mp3
-
----
-
 ## Tecnologias
 
-- Python — linguagem principal
-- sounddevice + scipy — captura de áudio e salvamento em WAV
-- Whisper (modelo: small) — Speech-to-Text
-- Hugging Face Router — acesso remoto a LLMs
+### Linguagem
+
+- Python 3.11+
+
+### Captura e reprodução de áudio
+
+- sounddevice — captura de áudio via microfone
+- scipy — salvamento de áudio em WAV
+- numpy — manipulação de buffers de áudio
+- playsound — reprodução local de áudio
+
+### Speech-to-Text (STT)
+
+- Whisper
+  - Modelo: small
+
+### LLM
+
+- Hugging Face Router — acesso remoto a modelos de linguagem
   - Modelo LLM: openai/gpt-oss-120b:fastest
-- ElevenLabs (Text-to-Speech) — geração de áudio em MP3
+
+### Text-to-Speech (TTS)
+
+- ElevenLabs
   - Modelo TTS: eleven_multilingual_v2
-- playsound / sounddevice — reprodução local do áudio
-- python-dotenv — gerenciamento de variáveis de ambiente
+
+### Gerenciamento de configuração
+
+- python-dotenv — gerenciamento de variáveis de ambiente (.env)
 
 ---
 
-## Configuração
+## Configuração (.env)
 
-Crie um arquivo ".env":
+Crie o arquivo `.env` na raiz do projeto:
 
-TOKEN_LLM=seu_token_llm
-TOKEN_TTS=seu_token_tts
+```bash
+TOKEN_LLM=seu_token_llm   # Token do provedor do modelo LLM (Hugging Face Router)
+TOKEN_TTS=seu_token_tts   # Token do ElevenLabs (Text-to-Speech)
+
+```
 
 ---
 
-## Execução
+## Como usar
 
+### Preparação do ambiente virtual
+
+```bash
+# Criação do ambiente
+python -m venv venv
+
+# Execução Windows
+.venv\Scripts\activate
+
+# Execução Linux / macOS
+source .venv/bin/activate
+
+# Instalação das libs
+pip install -r requirements.txt
+```
+
+###
+
+### Execução
+
+```bash
 python main.py
+```
 
-ENTER inicia a gravação
-ENTER para parar
+### Exemplo pós execução:
 
-O sistema transcreve, gera a resposta e fala automaticamente.
+```bash
+🎙️ Pressione ENTER para iniciar a gravação
+
+⏺️ Gravando... pressione ENTER para parar
+
+
+📝 Você disse:
+ O que é desenvolvimento back-end?
+
+🤖 Resposta:
+
+Desenvolvimento back‑end é a parte da programação que cuida da lógica,
+do processamento de dados e da comunicação com bancos de dados e servidores.
+Ele garante que as funcionalidades do site ou aplicativo funcionem corretamente,
+gerenciando requisições, autenticação, segurança e integração com outros serviços.
+
+🔊 Falando...
+
+(Aqui será a resposta em audio do modelo TTS do texto acima)
+```
